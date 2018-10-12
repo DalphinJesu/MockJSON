@@ -1,4 +1,4 @@
-"countries" = [
+[
   {
     "id": 1,
     "countryName": "India",
@@ -23,4 +23,4 @@
     "population": 20000,
     "status": "Enable"
   }
-];
+]
