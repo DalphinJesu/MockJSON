@@ -1,26 +1,31 @@
-[
-  {
-    "id": 1,
-    "countryName": "India",
-    "population": 10000,
-    "status": "Enable"
-  },
-  {
-    "id": 2,
-    "countryName": "Bhutan",
-    "population": 7000,
-    "status": "Enable"
-  },
-  {
-    "id": 3,
-    "countryName": "Nepal",
-    "population": 8000,
-    "status": "Enable"
-  },
-  {
-    "id": 4,
-    "countryName": "China",
-    "population": 20000,
-    "status": "Enable"
+{
+  "posts": [
+    {
+      "id": 1,
+      "title": "Post 1"
+    },
+    {
+      "id": 2,
+      "title": "Post 2"
+    },
+    {
+      "id": 3,
+      "title": "Post 3"
+    }
+  ],
+  "comments": [
+    {
+      "id": 1,
+      "body": "some comment",
+      "postId": 1
+    },
+    {
+      "id": 2,
+      "body": "some comment",
+      "postId": 1
+    }
+  ],
+  "profile": {
+    "name": "typicode"
   }
-]
+}
