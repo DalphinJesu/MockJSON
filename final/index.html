@@ -1,0 +1,271 @@
+<html>
+<head>
+<link href="css/style.css" rel="stylesheet" />
+<script type="text/javascript" src="scripts/jquery-2.1.4.js"></script>
+<script type="text/javascript" src="scripts/jquery-ui.min.js"></script>
+<script type="text/javascript" src="scripts/select2.js"></script>
+<script type="text/javascript" src="scripts/datePicker.js"></script>
+<style type="text/css">
+	.dataTable th .asterisque {
+		color: red;
+	}
+	input.hasDatepicker[disabled] + img.ui-datepicker-trigger {
+		display: none;
+	}
+	element.style {
+		width: 167px;
+	}
+	.formulaire .global_formulaire .row .block_input, .nouveau-collaborateur .global_formulaire .row .block_input {
+		padding: 6px 0 6px 2px;
+	}
+	.formulaire .global_formulaire, .nouveau-collaborateur .global_formulaire {
+		padding: 10px 15px;
+	}
+	body {
+		padding: 30px;
+	}
+	#recovery_list_table { display: none; }
+</style>
+
+</head>
+<div id="koSystemTableDetail" class="nouveau-collaborateur">
+    <h1>
+        vat_recovery_table_title
+    </h1>
+    <a class="back_link" href="/Administration/Tables">
+        <span>
+            link_back_tables_parameters
+        </span> <i class="icon puce-back"></i>
+    </a>
+    <div id="koSystemTableVATRecoveries" class="page_inner" style="visibility: hidden;">
+        <div class="page_form global_formulaire">
+            <div class="row">
+                <label for="selectCountries">
+                    <span>select_country_options</span>
+                </label>
+                <div class="block_input">
+                    <select id="selectCountries" class="recovery-select-lists" data-bind="value: selectedCountry, select2: { data: availableCountries }"></select>
+                </div>
+                <label for="selectCostTypes">
+                    <span>select_cost_type_options</span>
+                </label>
+                <div class="block_input">
+                    <select id="selectCostTypes" class="recovery-select-lists" data-bind="value: selectedCostType, select2: { data: availableCostTypes }"></select>
+                </div>
+                <label for="selectCostTypes">
+                    <span>select_genre_options</span>
+                </label>
+                <div class="block_input">
+                    <select id="selectGenres" class="recovery-select-lists" data-bind="value: selectedGenre, select2: { data: availableGenres }"></select>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <table class="display table dataTable no-footer" id="recovery_list_table" data-bind="visible: recoveryList().length > 0">
+                <thead>
+                    <tr>
+                        <th style="width:15% !important;">
+                            <span class="label inline-block vertical-middle">
+                                country
+                            </span>
+                            <span class="asterisque">*</span>
+                        </th>
+                        <th style="width:15% !important;">
+                            <span class="label inline-block vertical-middle">
+                                cost_type
+                            </span>
+                            <span class="asterisque">*</span>
+                        </th>
+                        <th style="width:15% !important;">
+                            <span class="label inline-block vertical-middle">
+                                genre
+                            </span>
+                            <span class="asterisque">*</span>
+                        </th>
+                        <th style="width:20% !important;">
+                            <span class="label inline-block vertical-middle">
+                                product
+                            </span>
+                            <span class="asterisque">*</span>
+                        </th>
+                        <th style="width:20% !important;">
+                            <span class="label inline-block vertical-middle">
+                                start_date
+                            </span>
+                            <span class="asterisque">*</span>
+                        </th>
+                        <th style="width:20% !important;">
+                            <span class="label inline-block vertical-middle">
+                                end_date
+                            </span>
+                            <span class="asterisque">*</span>
+                        </th>
+                        <th style="width:10% !important;">
+                            <span class="label inline-block vertical-middle">
+                                rate
+                            </span>
+                            <span class="asterisque">*</span>
+                        </th>
+                        <th style="width:170px !important;"></th>
+                    </tr>
+                </thead>
+                <tbody data-bind="foreach: recoveryList">
+                    <tr data-bind="visible: $data.saving()">
+                        <td colspan="6"><img src="" alt="please wait..."></td>
+                    </tr>
+                    <tr data-bind="visible: !$data.saving()">
+                        <td>
+                            <span data-bind="text: $data.CountryName, visible: $data.updating() !== true"></span>
+                            <span data-bind="visible: $data.updating() === true">
+                                <select data-bind="options: $data.countries, optionsValue: 'id', optionsText: 'text', value: $data.CountryId, visible: $data.updating() === true, enable: $data.updating() === true, attr: { name: 'country' + $data.Id() }"></select>
+                            </span>
+                        </td>
+                        <td>
+                            <span data-bind="text: $data.CostTypeName, visible: $data.updating() !== true"></span>
+                            <span data-bind="visible: $data.updating() === true">
+                                <select data-bind="options: $data.costTypes, optionsValue: 'id', optionsText: 'text', value: $data.CostTypeId, visible: $data.updating() === true, enable: $data.updating() === true, attr: { name: 'costType' + $data.Id() }"></select>
+                            </span>
+                        </td>
+                        <td>
+                            <span data-bind="text: $data.Genre, visible: $data.updating() !== true"></span>
+                            <span data-bind="visible: $data.updating() === true">
+                                <select data-bind="options: $data.genres, optionsValue: 'id', optionsText: 'text', value: $data.GenreCode, visible: $data.updating() === true, enable: $data.updating() === true, attr: { name: 'genre' + $data.Id() }"></select>
+                            </span>
+                        </td>
+                        <td data-bind="text: $data.ProductName"></td>
+                        <td>
+                            <input class="recovery_datefield" data-bind="customDatePicker: {}, value: $data.PeriodBeginDate, enable: $data.updating() === true || $data.updateDateField()"
+                                   type="text" style="width: 80px">
+                            @*<input type="text" data-bind="value: $data.PeriodBeginDate, enable: $data.updating() === true, attr: { id: 'PeriodBeginDate' + $data.Id() }" />*@
+                        </td>
+                        <td>
+                            <input class="recovery_datefield" data-bind="customDatePicker: {}, value:$data.PeriodEndDate, enable:$data.updating() === true || $data.updateDateField()" type="text" style="width: 80px">
+                            @* <input type="text" data-bind="value: $data.PeriodEndDate, enable: $data.updating() === true, attr: { id: 'PeriodEndDate' + $data.Id() }" />*@
+                        </td>
+                        <td><input type="text" data-bind="value: $data.Rate, enable: $data.updating() === true, attr: { id: 'rate' + $data.Id() }" /></td>
+                        <td style="text-align: left">
+                            <div class="table_actions">
+                                <a class="table_modifier" style="cursor: pointer;" data-bind="click: $data.startEdit, visible: $data.updating() !== true, enable: $data.updating() !== true">
+                                    <i class="icon modifier"></i>
+                                </a>
+                                <a class="table_modifier duplicateBtn" style="cursor: pointer;" data-bind="click: $data.duplicateRow.bind($data, $index()), visible: $data.updateDuplicateField(), enable: $data.updating() !== true">
+                                    Duplicate
+                                </a>
+                                <a class="table_modifier deleteBtn" style="cursor: pointer;" data-bind="click: $data.deleteDuplicatedRow, visible: $data.updateDateField(), enable: $data.updating() !== true">
+                                    Delete
+                                </a>
+                                <a class="table_modifier" style="cursor: pointer;" data-bind="click: $data.save, visible: $data.updating() === true, enable: $data.updating() === true">
+                                    <i class="icon add-coll"></i>
+                                </a>
+                                <a class="table_modifier" style="cursor: pointer;" data-bind="click: $data.cancelEdit, visible: $data.updating() === true, enable: $data.updating() === true">
+                                    <i class="icon del-coll"></i>
+                                </a>
+                                <i data-bind="visible: $data.errorMessage() != null, attr: { title: $data.errorMessage }" class="picto-warning"></i>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="row row_submit">
+                <button type="button" class="link-suivi" id="synchronize_btn">
+                    <span>synchronize_missing_products</span> <i class="puce_submit"></i>
+                </button>
+            </div>
+        </div>
+
+        <div id="addDefaultValueDialog" style="display:none" data-bind="with: newRecovery">
+            <form id="addDefaultValueForm" class="global_formulaire layer_form_notification">
+                <div class="layer_content">
+                    <div class="row">
+                        <label for="selectCountry">country_header_label&nbsp;<span class="asterisque">*</span></label>
+                        <div class="block_input">
+                            <select id="selectCountry" name="selectCountry" data-bind="select2: { data: $root.availableCountries }, value: CountryId"></select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label for="selectCostType">cost_type_header_label&nbsp;<span class="asterisque">*</span></label>
+                        <div class="block_input">
+                            <select id="selectCostType" name="selectCostType" data-bind="select2: { data: $root.availableCostTypes }, value: CostTypeId"></select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label for="selectGenre">vehicle_genre_header_label&nbsp;<span class="asterisque">*</span></label>
+                        <div class="block_input">
+                            <select id="selectGenre" name="selectGenre" data-bind="select2: { data: $root.availableGenres }, value: GenreCode"></select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label for="input_rate">rate_header_label&nbsp;<span class="asterisque">*</span></label>
+                        <div class="block_input">
+                            <input type="text" name="input_rate" id="input_rate" data-bind="value: Rate" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row row_error" data-bind="visible: $root.error() != null && $root.error() != ''">
+                    <span class="txt_and_icon">
+                        <span class="icon_24 icon_warn_round"></span>
+                        <span data-bind="text: $root.error" class="txt"></span>
+                    </span>
+                </div>
+
+                <div class="row_submit row_submit_center">
+                    <a id="cancelMailButton" class="link-back btn_reset" role="button" data-bind="click: $root.cancelAdd">
+                        <span class="ui-button-text editionOnly">form_cancel</span>
+                        <span class="ui-button-text displayOnly" style="display: none;">form_close</span>
+                    </a>
+                    <button type="button" class="link-suivi" data-bind="click: save">
+                        <span>popin_register</span> <i class="puce_submit"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <div style="display: none" id="errorPopinDialog">
+            <form class="global_formulaire layer_form_notification">
+                <div class="row row_error">
+                    <span class="txt_and_icon">
+                        <span class="icon_24 icon_warn_round"></span>
+                        <span class="txt">vat_management_rule</span>
+                    </span>
+                </div>
+                <div class="row_submit row_submit_center">
+                    <button type="button" class="link-suivi" onclick="$('#errorPopinDialog').dialog('close');">
+                        <span>form_close</span> <i class="puce_submit"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+	var column_group_name = "column_group_name";
+	var link_see_detail = "tvs_lookup_details_action";
+	var link_access_table = "access_table_link";
+
+	var loadingTranslation = "Loading_DataTable";
+	var placeHolderSearchTranslation = "SearchFine_DataTable";
+	var pages_histo = "Report_DataTable";
+	var critere_title = "Critere_Title";
+	var filterTranslation = "Filter_Datatable";
+	var tableName = '@ViewBag.TableName';
+	var idName = '@ViewBag.IdName';
+	var codeName = '@ViewBag.CodeName';
+
+	var popinTitle = "vat_recovery_popin_title";
+
+	var autonum = {
+		groupSeparator: "",
+		decimalSeparator: "",
+		decimalDigits: ""
+	};
+</script>
+
+<!-- <script src="scripts/vat-validate.js" type="text/javascript"></script> -->
+<script src="custom.js" type="text/javascript"></script>
+</body>
+</html>
